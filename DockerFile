@@ -1,0 +1,32 @@
+FROM php:7.1-fpm
+
+# Install necessary PHP extensions
+RUN docker-php-ext-install pdo_mysql
+
+# Install RabbitMQ extension for PHP
+RUN apt-get update && apt-get install -y librabbitmq-dev
+RUN pecl install amqp
+RUN docker-php-ext-enable amqp
+
+# Install necessary system packages
+RUN apt-get update && apt-get install -y \
+    git \
+    unzip
+
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Set working directory
+WORKDIR /app
+
+# Copy application files
+COPY . .
+
+# Install dependencies
+RUN composer install --no-dev --optimize-autoloader --prefer-dist
+
+# Expose ports
+EXPOSE 9000
+
+# Start PHP-FPM
+CMD ["php-fpm"]
