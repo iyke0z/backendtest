@@ -26,7 +26,7 @@ class NewsController extends AbstractController
         $page = $request->query->get('page', 1);
         $pageSize = 10;
         $entityManager = $this->em;
-        $news = $entityManager->getRepository(News::class)->findBy([], ['dateAdded' => 'desc'], $pageSize, ($page - 1) * $pageSize);
+        $news = $entityManager->getRepository(News::class)->findBy([], ['date_added' => 'desc'], $pageSize, ($page - 1) * $pageSize);
         $count = $entityManager->createQueryBuilder()
         ->select('COUNT(n)')
         ->from(News::class, 'n')
@@ -57,8 +57,8 @@ class NewsController extends AbstractController
      * @Route("/news/delete/{id}", name="news_delete")
      * @IsGranted("delete", subject="news")
      */
-    #[Route('/news/delete/{id}', methods:['POST', 'DELETE'], name: 'news_delete')]
-
+    #[Route('/news/delete/{id}', methods:['GET'], name: 'delete_news')]
+    // #[Route('/news/{id}/delete', methods: ['POST'], name: 'delete_news')]
     public function delete(News $news)
     {
         $entityManager = $this->em;

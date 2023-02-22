@@ -4,20 +4,19 @@
 
 {% block content %}
     {% for article in news %}
+    
         <h2>{{ article.title }}</h2>
         <p>{{ article.description }}</p>
-        <img src="{{ article.picture }}" alt="">
+        <img src="{{ article.picture }}" height=100 width=100 alt="">
         <p>{{ article.dateAdded|date }}</p>
-        {% if is_granted('ROLE_ADMIN') %}
             <form method="post" action="{{ path('delete_news', {'id': article.id}) }}">
                 <button type="submit">Delete</button>
             </form>
-        {% endif %}
     {% endfor %}
 
     {% if count > 1 %}
         <div class="pagination">
-            {% for i in count %}
+            {% for i in 1..count %}
                 <a href="{{ path('news_list', {'page': i}) }}">{{ i }}</a>
             {% endfor %}
         </div>
