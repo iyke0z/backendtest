@@ -22,7 +22,7 @@ class NewsParserService
 
     public function parseNews()
    { {
-    $response = $this->httpClient->request('GET', 'https://oxylabs.io/blog');
+    $response = $this->httpClient->request('GET', 'https://highload.today/category/novosti/');
     $content = $response->getContent();
 
     $dom = new \DOMDocument();
